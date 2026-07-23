@@ -12,6 +12,8 @@ import healthRoutes from './routes/health.js';
 import chatRoutes from './routes/chat.js';
 import reportRoutes from './routes/report.js';
 import riskRoutes from './routes/risk.js';
+import goalsRoutes from './routes/goals.js';
+import medicationsRoutes from './routes/medications.js';
 
 dotenv.config();
 
@@ -46,6 +48,8 @@ app.use('/api/health', healthRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/report', reportRoutes);
 app.use('/api/risk', riskRoutes);
+app.use('/api/goals', goalsRoutes);
+app.use('/api/medications', medicationsRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

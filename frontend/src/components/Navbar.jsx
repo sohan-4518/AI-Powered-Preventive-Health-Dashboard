@@ -1,6 +1,6 @@
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
-import { Sun, Moon, LogOut, User } from 'lucide-react';
+import { Sun, Moon, LogOut, User, Flame } from 'lucide-react';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -23,6 +23,13 @@ const Navbar = () => {
           >
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
+          
+          {user?.currentStreak > 0 && (
+            <div className="flex items-center space-x-1 px-3 py-2 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
+              <Flame className="w-4 h-4" />
+              <span className="text-sm font-bold">{user.currentStreak}</span>
+            </div>
+          )}
           
           <div className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800">
             <User className="w-4 h-4" />

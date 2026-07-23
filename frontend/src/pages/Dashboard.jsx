@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { Activity, Heart, Moon, Droplet, TrendingUp, AlertCircle } from 'lucide-react';
 import { Line, Doughnut } from 'react-chartjs-2';
 import HealthMetricForm from '../components/HealthMetricForm';
+import GoalsWidget from '../components/GoalsWidget';
+import MedicationsWidget from '../components/MedicationsWidget';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -288,6 +290,12 @@ const Dashboard = () => {
             <p className="text-gray-500">No statistics available</p>
           )}
         </motion.div>
+      </div>
+
+      {/* New Widgets */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-w-5xl mx-auto">
+        <GoalsWidget />
+        <MedicationsWidget />
       </div>
     </div>
   );

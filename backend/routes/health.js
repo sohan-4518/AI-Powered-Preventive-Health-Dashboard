@@ -1,5 +1,6 @@
 import express from 'express';
 import HealthMetric from '../database/models/HealthMetric.js';
+import User from '../database/models/User.js';
 import { normalizeMetrics, validateMetrics, generateDummyData } from '../utils/healthUtils.js';
 import { logger } from '../utils/logger.js';
 import { z } from 'zod';
@@ -85,6 +86,36 @@ router.post('/', async (req, res, next) => {
       },
       { upsert: true, new: true }
     );
+
+    // Update Streak
+    const user = await User.findById(userId);
+    if (user) {
+      const todayDate = new Date();
+      todayDate.setHours(0, 0, 0, 0);
+
+      if (!user.lastLogDate) {
+        user.currentStreak = 1;
+        user.longestStreak = 1;
+        user.lastLogDate = todayDate;
+      } else {
+        const lastLog = new Date(user.lastLogDate);
+        lastLog.setHours(0, 0, 0, 0);
+        const diffTime = Math.abs(todayDate - lastLog);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+
+        if (diffDays === 1) {
+          user.currentStreak += 1;
+          if (user.currentStreak > user.longestStreak) {
+            user.longestStreak = user.currentStreak;
+          }
+          user.lastLogDate = todayDate;
+        } else if (diffDays > 1) {
+          user.currentStreak = 1;
+          user.lastLogDate = todayDate;
+        }
+      }
+      await user.save();
+    }
 
     logger.info(`Health metric saved for user ${userId}`);
 
